@@ -19,35 +19,81 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     * path="/login",
-     * summary="Sign in",
-     * description="Login by email, password",
+     * path="/auth/login",
+     * summary="login in",
      * operationId="authLogin",
-     * tags={"auth"},
+     * tags={"Authentication"},
+     * operationId="authenticate",
      * @OA\RequestBody(
      *    required=true,
      *    description="Pass user credentials",
-     *    @OA\JsonContent(
-     *       required={"email","password"},
-     *       @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
-     *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
-     *       @OA\Property(property="persistent", type="boolean", example="true"),
+     *    @OA\MediaType(
+     *      mediaType="application/json",
+     *      @OA\Schema(
+     *               type="object",
+     *               @OA\Property(
+     *                   property="email",
+     *                   description="email user",
+     *                   type="string"
+     *               ),
+     *               @OA\Property(
+     *                   property="password",
+     *                   description="password user",
+     *                   type="string"
+     *               ),
+     *      )
      *    ),
      * ),
-     * @OA\Response(
-     *    response=422,
-     *    description="Wrong credentials response",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", example="Sorry, wrong email address or password. Please try again")
-     *        )
-     *     )
+     *   @OA\Response(response="200",description="Success create element"),
      * )
+     * @param LoginForm $request
      */
+
+
     public function login(LoginRequest $request)
     {
         return $this->authRepository->login($request);
     }
-
+    /**
+     * @OA\Post(
+     *   path="/auth/register",
+     *   tags={"Authentication"},
+     *   summary="register user",
+     *   description="",
+     *   operationId="register",
+     *   @OA\RequestBody(
+     *       required=true,
+     *       @OA\MediaType(
+     *           mediaType="application/json",
+     *           @OA\Schema(
+     *               type="object",
+     *               @OA\Property(
+     *                   property="name",
+     *                   description="name user",
+     *                   type="string"
+     *               ),
+     *               @OA\Property(
+     *                   property="email",
+     *                   description="email user",
+     *                   type="string"
+     *               ),
+     *               @OA\Property(
+     *                   property="password",
+     *                   description="password user",
+     *                   type="string"
+     *               ),
+     *              @OA\Property(
+     *                   property="password_confirmation",
+     *                   description="password confirmation",
+     *                   type="string"
+     *               ),
+     *           )
+     *       )
+     *   ),
+     *   @OA\Response(response="200",description="Success create element"),
+     * )
+     * @param RegisterRequest $request
+     */
     public function register(RegisterRequest $request)
     {
         return $this->authRepository->register($request);
@@ -67,4 +113,6 @@ class AuthController extends Controller
         return $this->authRepository->refresh();
     }
 }
+
+// https://youtu.be/SDIukodcW7c?t=2815
 

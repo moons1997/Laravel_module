@@ -1,5 +1,7 @@
 <?php
 
+use App\Modules\Todo\Providers\TodoServiceProvider;
+
 return [
 
     /*
@@ -175,6 +177,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // modules
+        TodoServiceProvider::class,
     ],
 
     /*

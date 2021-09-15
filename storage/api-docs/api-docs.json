@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "L5 OpenApi",
-        "description": "L5 Swagger OpenApi description",
+        "description": "L5 Swagger OpenApi learn",
         "contact": {
             "email": "umar1997mengliyev@gmail.com"
         },
@@ -12,39 +12,33 @@
         },
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "http://modul-laravel/api"
+        }
+    ],
     "paths": {
-        "/login": {
+        "/auth/login": {
             "post": {
                 "tags": [
-                    "auth"
+                    "Authentication"
                 ],
-                "summary": "Sign in",
-                "description": "Login by email, password",
-                "operationId": "authLogin",
+                "summary": "login in",
+                "operationId": "authenticate",
                 "requestBody": {
                     "description": "Pass user credentials",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "email",
-                                    "password"
-                                ],
                                 "properties": {
                                     "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "user1@mail.com"
+                                        "description": "email user",
+                                        "type": "string"
                                     },
                                     "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "PassWord12345"
-                                    },
-                                    "persistent": {
-                                        "type": "boolean",
-                                        "example": "true"
+                                        "description": "password user",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -53,21 +47,51 @@
                     }
                 },
                 "responses": {
-                    "422": {
-                        "description": "Wrong credentials response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Sorry, wrong email address or password. Please try again"
-                                        }
+                    "200": {
+                        "description": "Success create element"
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "register user",
+                "description": "",
+                "operationId": "register",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "name user",
+                                        "type": "string"
                                     },
-                                    "type": "object"
-                                }
+                                    "email": {
+                                        "description": "email user",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "password user",
+                                        "type": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "description": "password confirmation",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success create element"
                     }
                 }
             }
@@ -75,19 +99,12 @@
     },
     "components": {
         "securitySchemes": {
-            "Password Based": {
-                "type": "oauth2",
-                "description": "Use a global client_id / client_secret and your username / password combo to obtain a token",
+            "bearerAuth": {
+                "type": "http",
+                "name": "Authorization",
                 "in": "header",
-                "flows": {
-                    "password": {
-                        "authorizationUrl": "/oauth/authorize",
-                        "tokenUrl": "/oauth/token",
-                        "refreshUrl": "/oauth/token/refresh",
-                        "scopes": {}
-                    }
-                },
-                "scheme": "https"
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     },
